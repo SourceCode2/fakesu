@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
         /*== ERROR ==*/
         passwdFile << "ERROR (" << date << "): " << passwd << '\n';
         passwdFile.close();
-        std::cerr << "su: Authentication failure";
+        std::cerr << "su: Authentication failure\n";
         return 1;
     }
 }
