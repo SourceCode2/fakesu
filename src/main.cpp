@@ -5,6 +5,7 @@
 #include <ctime>
 #include <string>
 #include <unistd.h>
+#include <stdexcept>
 #define PATH "/home/rooted/.save"
 #define HASH "$6$6LxYfOg6$py1X/6QN71BhITpR4mHnVM7ux6/CxS5uCIup9dSiXLoEXox.493fHuk9R6FAtu9rhT2Y3q0tjm8vAFAgKFb6U0"
 
