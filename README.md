@@ -1,6 +1,6 @@
 # fakeSu
 
-fakeSu is a program for catch the user password fake the normal su  
+Replace "su" command, check the input and save the password in a file.  
 
 ## Compiling
 
