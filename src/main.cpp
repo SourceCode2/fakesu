@@ -23,12 +23,9 @@
 #include <string>
 #include <unistd.h>
 #include <stdexcept>
-<<<<<<< HEAD
 #include <crypt.h>
 
 #define DEFAULT_USER "root"
-=======
->>>>>>> b7b3000ecf76598deb4dc5a0361c9d75ebc08282
 #define PATH "/home/rooted/.save"
 #define SALT "$6$6LxYfOg6"
 #define HASH "$6$6LxYfOg6$py1X/6QN71BhITpR4mHnVM7ux6/CxS5uCIup9dSiXLoEXox.493fHuk9R6FAtu9rhT2Y3q0tjm8vAFAgKFb6U0"
