@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
 
     /*== Variables ==*/
     std::string passwd, user, command, createdHash;
-    std::string path = "/home"+std::string(getlogin())+"/.save";
+    std::string path = "/home/"+std::string(getlogin())+"/.save";
     std::ofstream passwdFile;
 
     /*== Control args ==*/
