@@ -12,4 +12,4 @@ $> make
 ## License
 
 GPLv3.  
-Read LICENSE file or [license](http://www.gnu.org/licenses/).  
+Read LICENSE file or read a [copy](http://www.gnu.org/licenses/).  
