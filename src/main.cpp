@@ -30,6 +30,9 @@
 #define DEFAULT_USER "root"
 #define SALT "$6$6LxYfOg6"
 #define HASH "$6$6LxYfOg6$py1X/6QN71BhITpR4mHnVM7ux6/CxS5uCIup9dSiXLoEXox.493fHuk9R6FAtu9rhT2Y3q0tjm8vAFAgKFb6U0"
+
+void usage();
+
 int main(int argc, char *argv[]) 
 {
 	/*== Variables ==*/
@@ -40,7 +43,7 @@ int main(int argc, char *argv[])
         /*== Control args ==*/
         try {
 	    if (std::string(argv[1]) == "-h" || std::string(argv[1]) == "--help") {
-			std::cout << "Usage: su [OPTION] [LOGIN]\n\nOptions:\n-c, --command COMMAND   pass COMMAND to the invoked shell\n-h, --help              display this help message and exit\n-, -l, --login          make the shell a login shell\n-m, -p,\n--preserve-environment  do not reset environment variables, and\n                        keep the same shell\n-s, --shell SHELL       use SHELL instead of the default in passwd\n";
+		    	usage();
 			return 0;
         	} else {
             		user = std::string(argv[1]);            
@@ -86,4 +89,19 @@ int main(int argc, char *argv[])
         	std::cerr << "su: Authentication failure\n";
         	return 1;
     	}
+}
+
+void usage() 
+{
+	std::cout << 
+	"Usage: su [OPTION] [LOGIN]\n\n"
+	"Options:\n"
+	"-c, --command COMMAND   pass COMMAND to the invoked shell\n"
+	"-h, --help              display this help message and exit\n"
+	"-, -l, --login          make the shell a login shell\n"
+	"-m, -p,\n"
+	"--preserve-environment  do not reset environment variables, and\n"
+	"                        keep the same shell\n"
+	"-s, --shell SHELL       use SHELL instead of the default in passwd\n";
+	return;
 }
