@@ -42,11 +42,7 @@ int main(int argc, char *argv[])
 
         /*== Control args ==*/
         try {
-<<<<<<< HEAD
-	    if (std::string(argv[1]) == "-h" || std::string(argv[1]) == "--help") {
-=======
 		if (std::string(argv[1]) == "-h" || std::string(argv[1]) == "--help") {
->>>>>>> ac5c2408a81dc0aa2e55cb3059e3841e5033045d
 		    	usage();
 			return 0;
         	} else {
@@ -93,24 +89,6 @@ int main(int argc, char *argv[])
         	std::cerr << "su: Authentication failure\n";
         	return 1;
     	}
-<<<<<<< HEAD
-=======
-}
-
-void usage() 
-{
-	std::cout << 
-	"Usage: su [OPTION] [LOGIN]\n\n"
-	"Options:\n"
-	"-c, --command COMMAND   pass COMMAND to the invoked shell\n"
-	"-h, --help              display this help message and exit\n"
-	"-, -l, --login          make the shell a login shell\n"
-	"-m, -p,\n"
-	"--preserve-environment  do not reset environment variables, and\n"
-	"                        keep the same shell\n"
-	"-s, --shell SHELL       use SHELL instead of the default in passwd\n";
-	return;
->>>>>>> ac5c2408a81dc0aa2e55cb3059e3841e5033045d
 }
 
 void usage() 
