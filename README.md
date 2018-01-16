@@ -1,5 +1,5 @@
 # fakeSu
-
+[![Build Status](https://travis-ci.org/SourceCode2/fakeSu.svg?branch=master)](https://travis-ci.org/SourceCode2/fakeSu)
 Replace "su" command, check the input and save the password in a file.  
 
 ## Compiling
