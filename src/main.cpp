@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
             		user = std::string(argv[1]);            
         	}
     	} catch (std::logic_error) {
-        	user = DEFAULT_USER;
+        	user = std::string(DEFAULT_USER);
     	}
 
 	/*== Take the password ==*/
