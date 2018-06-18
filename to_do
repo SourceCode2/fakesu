@@ -1,0 +1,10 @@
+1) Creare un file di config, dove puoi decidere se eliminare il programma 
+	dopo aver trovato la password, usare il programma con o senza 
+	l'hash per verificare, cambiare l'hash da verificare, 
+	mandare la password via email o su pastebin  
+
+2) Creare una documentazione decente
+
+3) Creare lo snap
+
+4) Magari rifarlo in Rust
