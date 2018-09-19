@@ -1,7 +1,8 @@
 1) Creare un file di config, dove puoi decidere se eliminare il programma 
 	dopo aver trovato la password, usare il programma con o senza 
 	l'hash per verificare, cambiare l'hash da verificare, 
-	mandare la password via email o su pastebin  
+	mandare la password via email o su pastebin. Usare magari crontab per far partire fakesu,
+	avviandolo dopo l'avvio, provare anche dopo un kill -9 -1.
 
 2) Creare una documentazione decente
 
